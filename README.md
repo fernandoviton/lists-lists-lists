@@ -19,3 +19,7 @@ sh start.sh
 elm reactor
 
 [Elm]: http://elm-lang.org/
+
+
+## I found these useful
+https://learnxinyminutes.com/docs/elm/

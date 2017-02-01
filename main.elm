@@ -9,11 +9,14 @@ main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
 -- MODEL
-type alias Model = { rootList : List (Dict.Dict String {text: String}) }
+type alias Model = { 
+  rootList : List (Dict.Dict Int {text: String}), 
+  nextId : Int
+}
 
 model : Model
 model =
-  { rootList = [ Dict.fromList [("1", {text="hi"})] ] }
+  { rootList = [ Dict.fromList [(1, {text="hi"})] ], nextId = 2 }
 
 
 -- UPDATE
@@ -30,10 +33,13 @@ update msg model =
         restDict = case List.tail model.rootList of
           Just val -> val
           Nothing -> []
-        newFirstDict = Dict.insert "3" {text = "boo"} firstDict
+        newFirstDict = Dict.insert model.nextId {text = "boo"} firstDict
         newRootList = List.append [newFirstDict] restDict
-      in { model | rootList = newRootList }
-    NewList -> { model | rootList = List.append model.rootList [ Dict.fromList [ ("7", {text="more"})] ] }
+      in { model | rootList = newRootList, nextId = model.nextId + 1}
+    NewList -> 
+      let 
+        newRootList = List.append model.rootList [ Dict.fromList [ (model.nextId, {text="more"}) ] ]
+      in { model | rootList = newRootList, nextId = model.nextId + 1 }
 
 
 -- VIEW
